@@ -411,6 +411,7 @@ class LibvirtDriver(driver.ComputeDriver):
         self._event_queue = None
 
         self._disk_cachemode = None
+        self._disk_iomode = None
         self.image_cache_manager = imagecache.ImageCacheManager()
         self.image_backend = imagebackend.Backend(CONF.use_cow_images)
 

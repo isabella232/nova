@@ -20,6 +20,7 @@ import uuid
 
 from neutronclient.common import exceptions as neutron_client_exc
 from oslo.config import cfg
+from oslo.serialization import jsonutils
 
 from nova.api.openstack import extensions
 from nova.compute import flavors
@@ -417,9 +418,10 @@ class API(base_api.NetworkAPI):
                     touched_port_ids.append(port['id'])
                     ports_in_requested_order.append(port['id'])
                 else:
+                    address = jsonutils.to_primitive(request.address)
                     created_port = self._create_port(
                             port_client, instance, request.network_id,
-                            port_req_body, request.address,
+                            port_req_body, address,
                             security_group_ids, available_macs, dhcp_opts)
                     created_port_ids.append(created_port)
                     ports_in_requested_order.append(created_port)

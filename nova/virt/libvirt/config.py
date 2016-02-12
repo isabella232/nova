@@ -713,6 +713,7 @@ class LibvirtConfigGuestDisk(LibvirtConfigGuestDevice):
         self.driver_name = None
         self.driver_format = None
         self.driver_cache = None
+        self.driver_io = None
         self.driver_discard = None
         self.source_path = None
         self.source_protocol = None
@@ -747,6 +748,7 @@ class LibvirtConfigGuestDisk(LibvirtConfigGuestDevice):
         if (self.driver_name is not None or
             self.driver_format is not None or
             self.driver_cache is not None or
+            self.driver_io is not None or
                 self.driver_discard is not None):
             drv = etree.Element("driver")
             if self.driver_name is not None:
@@ -755,6 +757,8 @@ class LibvirtConfigGuestDisk(LibvirtConfigGuestDevice):
                 drv.set("type", self.driver_format)
             if self.driver_cache is not None:
                 drv.set("cache", self.driver_cache)
+            if self.driver_io is not None:
+                drv.set("io", self.driver_io)
             if self.driver_discard is not None:
                 drv.set("discard", self.driver_discard)
             dev.append(drv)
@@ -853,6 +857,7 @@ class LibvirtConfigGuestDisk(LibvirtConfigGuestDevice):
                 self.driver_name = c.get('name')
                 self.driver_format = c.get('type')
                 self.driver_cache = c.get('cache')
+                self.driver_io = c.get('io')
                 self.driver_discard = c.get('discard')
             elif c.tag == 'source':
                 if self.source_type == 'file':
@@ -948,6 +953,7 @@ class LibvirtConfigGuestSnapshotDisk(LibvirtConfigObject):
         self.driver_name = None
         self.driver_format = None
         self.driver_cache = None
+        self.driver_io = None
         self.source_path = None
         self.source_protocol = None
         self.source_name = None
@@ -976,6 +982,7 @@ class LibvirtConfigGuestSnapshotDisk(LibvirtConfigObject):
             dev.set("device", self.source_device)
             if (self.driver_name is not None or
                 self.driver_format is not None or
+                self.driver_io is not None or
                     self.driver_cache is not None):
                 drv = etree.Element("driver")
                 if self.driver_name is not None:
@@ -984,6 +991,8 @@ class LibvirtConfigGuestSnapshotDisk(LibvirtConfigObject):
                     drv.set("type", self.driver_format)
                 if self.driver_cache is not None:
                     drv.set("cache", self.driver_cache)
+                if self.driver_io is not None:
+                    drv.set("io", self.driver_io)
                 dev.append(drv)
 
         if self.source_type == "file":
@@ -1031,6 +1040,7 @@ class LibvirtConfigGuestSnapshotDisk(LibvirtConfigObject):
                 self.driver_name = c.get('name')
                 self.driver_format = c.get('type')
                 self.driver_cache = c.get('cache')
+                self.driver_io = c.get('io')
             elif c.tag == 'source':
                 if self.source_type == 'file':
                     self.source_path = c.get('file')
